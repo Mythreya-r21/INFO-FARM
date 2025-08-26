@@ -1,0 +1,314 @@
+/* =======================
+   Global
+======================= */
+body {
+  margin: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f0f4f7;
+  color: #333;
+}
+
+/* =======================
+   Buttons
+======================= */
+.primary-btn {
+  padding: 6px 14px;
+  background: #4caf50;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: 0.2s ease;
+  margin: 2px;
+}
+.primary-btn:hover {
+  background: #45a049;
+}
+
+.logout-btn {
+  background: #e74c3c;
+  padding: 6px 14px;
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  cursor: pointer;
+}
+.logout-btn:hover {
+  background: #c0392b;
+}
+
+/* =======================
+   Hello Page
+======================= */
+.hello-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background: #e2f0d9;
+}
+.hello-container {
+  text-align: center;
+  background: #fff;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.hello-container h1 {
+  font-size: 36px;
+  margin-bottom: 10px;
+}
+.hello-container p {
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+/* =======================
+   Auth Pages (Login & Register)
+======================= */
+.auth-container {
+  max-width: 400px;
+  margin: 60px auto;
+  background: #fff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.auth-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+.auth-form {
+  display: flex;
+  flex-direction: column;
+}
+.auth-form input, .auth-form select {
+  padding: 10px;
+  margin: 8px 0;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+.link {
+  color: #007bff;
+  cursor: pointer;
+  margin-left: 5px;
+}
+.link:hover {
+  text-decoration: underline;
+}
+
+/* =======================
+   Dashboard
+======================= */
+.dashboard-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  background: #4caf50;
+  color: white;
+  padding: 15px;
+  border-radius: 8px;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+/* Hamburger Menu */
+.hamburger-menu {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  cursor: pointer;
+  z-index: 100;
+}
+.hamburger-menu span {
+  display: block;
+  width: 25px;
+  height: 3px;
+  background: #333;
+  margin: 5px 0;
+  border-radius: 2px;
+}
+
+/* Side Menu */
+.side-menu {
+  position: fixed;
+  top: 0;
+  left: -260px;
+  width: 250px;
+  height: 100%;
+  background: #fff;
+  box-shadow: 2px 0 8px rgba(0,0,0,0.2);
+  padding: 20px;
+  transition: 0.3s ease;
+  z-index: 99;
+  display: flex;
+  flex-direction: column;
+}
+.side-menu.active {
+  left: 0;
+}
+.side-menu h3 {
+  margin-top: 0;
+}
+.side-menu button {
+  margin: 10px 0;
+}
+
+/* Add Product Form */
+.add-product {
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  margin: 15px 0;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+}
+.product-form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 10px;
+}
+.product-form input,
+.product-form select,
+.product-form button {
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  width: 100%;
+}
+
+/* Form Buttons */
+.form-buttons {
+  grid-column: span 2;
+  display: flex;
+  gap: 10px;
+}
+.save-btn {
+  background: #4caf50;
+  font-size: 13px;
+  padding: 5px 10px;
+}
+.cancel-btn {
+  background: #f44336;
+  font-size: 13px;
+  padding: 5px 10px;
+}
+
+/* Product Table */
+.product-list table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+.product-list th,
+.product-list td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+  font-size: 14px;
+}
+.product-list th {
+  background-color: #c8e6c9;
+}
+.product-list img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+.product-list .qr-code {
+  cursor: pointer;
+}
+
+/* QR Modal */
+.qr-modal {
+  position: fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background: rgba(0,0,0,0.5);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  z-index: 100;
+}
+.qr-modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 320px;
+  position: relative;
+  text-align: center;
+}
+.qr-modal-content img {
+  margin-bottom: 10px;
+}
+.qr-modal-content .close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: #e74c3c;
+  color: #fff;
+  border: none;
+  padding: 4px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* Orders / Role content */
+.role-content {
+  margin-top: 20px;
+  background: #fff;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+}
+
+/* Search Bar */
+.search-container {
+  position: relative;
+  margin: 10px 0;
+}
+.search-container input {
+  padding: 6px 28px 6px 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  width: 100%;
+}
+.search-container .search-icon {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 16px;
+  color: #666;
+  pointer-events: none;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .product-form {
+    grid-template-columns: 1fr;
+  }
+  .form-buttons {
+    flex-direction: column;
+  }
+  .product-list table, .product-list th, .product-list td {
+    font-size: 12px;
+  }
+  .side-menu {
+    width: 200px;
+  }
+}
