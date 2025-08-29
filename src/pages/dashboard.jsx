@@ -1,4 +1,3 @@
-// src/pages/Dashboard.jsx
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { QRCodeCanvas } from "qrcode.react";
@@ -12,7 +11,7 @@ export default function Dashboard() {
     name: "",
     cropType: "",
     soilType: "",
-    status: role.toLowerCase(),
+    status: "Active",
     pesticides: "",
     plantedDate: "",
     harvestedDate: "",
@@ -25,10 +24,12 @@ export default function Dashboard() {
     const saved = localStorage.getItem("products");
     return saved ? JSON.parse(saved) : [];
   });
+
   const [showForm, setShowForm] = useState(false);
   const [newProduct, setNewProduct] = useState(initialProductState);
-  const [qrModal, setQrModal] = useState({ open: false, data: null });
-  const [viewPage, setViewPage] = useState("products"); // "products" or "orders" etc.
+  const [qrModal, setQrModal] = useState({ open: false, data: null, showInfo: false });
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [viewPage, setViewPage] = useState("products"); // products, dashboard, orders
 
   useEffect(() => {
     localStorage.setItem("products", JSON.stringify(products));
@@ -65,9 +66,6 @@ export default function Dashboard() {
       imageUrl,
     };
 
-    const productToSave = { ...product };
-    delete productToSave.imageFile; // remove File object before saving
-
     setProducts((prev) => [...prev, product]);
     setNewProduct(initialProductState);
     setShowForm(false);
@@ -82,7 +80,64 @@ export default function Dashboard() {
   const visibleProducts =
     role.toLowerCase() === "admin"
       ? products
-      : products.filter((p) => p.createdBy === email || p.status === role.toLowerCase());
+      : products.filter((p) => p.createdBy === email || p.status.toLowerCase() === role.toLowerCase());
+
+  const dashboardData = {
+    farmer: [
+      { title: "Crops Planted 🌾", value: 12 },
+      { title: "Harvest Ready 🥦", value: 5 },
+      { title: "Crops Sold 💰", value: 3 },
+      { title: "Pending Harvest ⏳", value: 4 },
+    ],
+    distributor: [
+      { title: "Stock Received 📦", value: 20 },
+      { title: "Stock Distributed 🚚", value: 15 },
+      { title: "In Transit 🛣️", value: 6 },
+      { title: "Pending Supply 🕒", value: 2 },
+    ],
+    retailer: [
+      { title: "Products in Stock 🏪", value: 10 },
+      { title: "Products Sold 🛒", value: 7 },
+      { title: "Awaiting Supply 📥", value: 3 },
+      { title: "Out of Stock ❌", value: 1 },
+    ],
+    consumer: [
+      { title: "Orders Placed 📑", value: 8 },
+      { title: "Orders Received 📦", value: 5 },
+      { title: "Orders Pending ⏳", value: 2 },
+      { title: "Cancelled Orders ❌", value: 1 },
+    ],
+    admin: [
+      { title: "Farmers Registered 🌾", value: 12 },
+      { title: "Distributors Registered 🚛", value: 5 },
+      { title: "Retailers Registered 🏬", value: 7 },
+      { title: "Consumers Registered 👥", value: 20 },
+    ],
+  };
+
+  const ordersData = {
+    farmer: [
+      { product: "Tomatoes", quantity: 50, status: "Delivered" },
+      { product: "Wheat", quantity: 30, status: "Pending" },
+    ],
+    distributor: [
+      { product: "Rice", quantity: 20, status: "In Transit" },
+      { product: "Wheat", quantity: 15, status: "Delivered" },
+    ],
+    retailer: [
+      { product: "Vegetables", quantity: 10, status: "Delivered" },
+      { product: "Fruits", quantity: 25, status: "Pending" },
+    ],
+    consumer: [
+      { product: "Rice", quantity: 5, status: "Received" },
+      { product: "Tomatoes", quantity: 12, status: "Pending" },
+    ],
+    admin: [
+      { product: "Tomatoes", quantity: 50, status: "Delivered" },
+      { product: "Wheat", quantity: 30, status: "Pending" },
+      { product: "Rice", quantity: 20, status: "In Transit" },
+    ],
+  };
 
   return (
     <div className="dashboard-container">
@@ -90,7 +145,7 @@ export default function Dashboard() {
       <header className="dashboard-header">
         <h1>{role} Dashboard</h1>
         <div className="user-info">
-          <button className="menu-btn" onClick={() => setViewPage("menu")}>
+          <button className="menu-btn" onClick={() => setSidebarOpen(!sidebarOpen)}>
             ☰
           </button>
           <button className="logout-btn" onClick={handleLogout}>
@@ -99,142 +154,203 @@ export default function Dashboard() {
         </div>
       </header>
 
-      {/* Three-line menu */}
-      {viewPage === "menu" && (
+      {/* Sidebar */}
+      {sidebarOpen && (
         <div className="side-menu">
-          <button onClick={() => setViewPage("products")}>Products</button>
-          <button onClick={() => setViewPage("orders")}>Orders</button>
-          <button onClick={() => setViewPage("settings")}>Settings</button>
-          <button onClick={() => setViewPage("help")}>Help Center</button>
-        </div>
-      )}
-
-      {/* Add Product Button */}
-      {viewPage === "products" && ["farmer", "admin", "distributor", "retailer"].includes(role.toLowerCase()) && (
-        <button className="primary-btn" onClick={() => setShowForm(!showForm)}>
-          + Add Product
-        </button>
-      )}
-
-      {/* Product Form */}
-      {showForm && viewPage === "products" && (
-        <section className="add-product">
-          <h2>Add Product</h2>
-          <form className="product-form" onSubmit={handleAddProduct}>
-            <input
-              type="text"
-              name="name"
-              placeholder="Product Name"
-              value={newProduct.name}
-              onChange={handleChange}
-              required
-            />
-            <select name="cropType" value={newProduct.cropType} onChange={handleChange} required>
-              <option value="">Select Crop Type</option>
-              <option value="vegetables">Vegetables</option>
-              <option value="fruit">Fruit</option>
-              <option value="grains">Grains</option>
-              <option value="dals">Dals</option>
-              <option value="other">Other</option>
-            </select>
-            <select name="soilType" value={newProduct.soilType} onChange={handleChange} required>
-              <option value="">Select Soil Type</option>
-              <option value="clay">Clay</option>
-              <option value="sandy">Sandy</option>
-              <option value="loamy">Loamy</option>
-              <option value="silty">Silty</option>
-            </select>
-            <input type="text" name="pesticides" placeholder="Pesticides Used" value={newProduct.pesticides} onChange={handleChange} />
-            <input type="date" name="plantedDate" placeholder="Planted Date" value={newProduct.plantedDate} onChange={handleChange} />
-            <input type="date" name="harvestedDate" placeholder="Harvested Date" value={newProduct.harvestedDate} onChange={handleChange} />
-            <input type="date" name="useBefore" placeholder="Use Before" value={newProduct.useBefore} onChange={handleChange} />
-            <input type="text" name="location" placeholder="Location" value={newProduct.location} onChange={handleChange} />
-            <input type="file" name="imageFile" onChange={handleChange} />
-            <div className="form-buttons">
-              <button type="submit" className="primary-btn small-btn">Save</button>
-              <button type="button" className="primary-btn small-btn" onClick={() => setShowForm(false)}>Cancel</button>
-            </div>
-          </form>
-        </section>
-      )}
-
-      {/* Product Table */}
-      {viewPage === "products" && (
-        <section className="product-list">
-          <h2>Products</h2>
-          <input type="text" placeholder="🔍 Search" className="search-bar" />
-          <table>
-            <thead>
-              <tr>
-                <th>Image</th>
-                <th>Crop Name</th>
-                <th>Soil Name</th>
-                <th>Pesticides</th>
-                <th>Planted Date</th>
-                <th>Harvested Date</th>
-                <th>Use Before</th>
-                <th>Location</th>
-                <th>QR</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {visibleProducts.map((p) => (
-                <tr key={p.id}>
-                  <td>{p.imageUrl && <img src={p.imageUrl} alt={p.name} style={{ width: "50px", height: "50px", objectFit: "cover", borderRadius: "4px" }} />}</td>
-                  <td>{p.name}</td>
-                  <td>{p.soilType}</td>
-                  <td>{p.pesticides}</td>
-                  <td>{p.plantedDate}</td>
-                  <td>{p.harvestedDate}</td>
-                  <td>{p.useBefore}</td>
-                  <td>{p.location}</td>
-                  <td>
-                    <div className="qr-code" onClick={() => setQrModal({ open: true, data: p })}>
-                      <QRCodeCanvas value={JSON.stringify(p)} size={80} />
-                    </div>
-                  </td>
-                  <td>
-                    {["farmer", "admin", "distributor", "retailer"].includes(role.toLowerCase()) && (
-                      <button className="primary-btn small-btn" onClick={() => handleDelete(p.id)}>Delete</button>
-                    )}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </section>
-      )}
-
-      {/* Orders */}
-      {viewPage === "orders" && (
-        <section className="orders-page">
-          <h2>Orders</h2>
+          <button className="close-btn" onClick={() => setSidebarOpen(false)}>Back</button>
           <ul>
-            <li>Order ID: 1001 — Product: Tomatoes — Quantity: 50 — Status: Delivered</li>
-            <li>Order ID: 1002 — Product: Wheat — Quantity: 30 — Status: Received</li>
-            <li>Order ID: 1003 — Product: Rice — Quantity: 20 — Status: Pending</li>
+            <li onClick={() => setViewPage("dashboard")}>Dashboard Status</li>
+            <li onClick={() => setViewPage("orders")}>Orders</li>
+            <li onClick={() => setViewPage("products")}>Products</li>
+            <li>Settings</li>
+            <li>Help Center</li>
+            <li>About Us</li>
           </ul>
-        </section>
-      )}
-
-      {/* QR Modal */}
-      {qrModal.open && (
-        <div className="qr-modal">
-          <div className="qr-modal-content">
-            <h3>Product Info</h3>
-            <button className="close-btn" onClick={() => setQrModal({ open: false, data: null })}>X</button>
-            {qrModal.data && (
-              <div>
-                {qrModal.data.imageUrl && (
-                  <img src={qrModal.data.imageUrl} alt={qrModal.data.name} style={{ width: "150px", borderRadius: "6px" }} />
-                )}
-                <pre>{JSON.stringify(qrModal.data, null, 2)}</pre>
-              </div>
-            )}
-          </div>
         </div>
       )}
+
+      <main className="dashboard-main">
+        {/* Search */}
+        {viewPage === "products" && (
+          <div className="search-container">
+            <input type="text" placeholder="Search products..." />
+          </div>
+        )}
+
+        {/* Dashboard Status */}
+        {viewPage === "dashboard" && (
+          <div className="dashboard-status">
+            {dashboardData[role.toLowerCase()]?.map((d, i) => (
+              <div className="status-card" key={i}>
+                <h3>{d.title}</h3>
+                <p>{d.value}</p>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* Orders */}
+        {viewPage === "orders" && (
+          <div className="orders-page">
+            <h2>Orders</h2>
+            <table>
+              <thead>
+                <tr>
+                  <th>Product</th>
+                  <th>Quantity</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {ordersData[role.toLowerCase()]?.map((o, i) => (
+                  <tr key={i}>
+                    <td>{o.product}</td>
+                    <td>{o.quantity}</td>
+                    <td>{o.status}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+
+        {/* Add Product Form */}
+        {viewPage === "products" && (
+          <>
+            <button className="primary-btn" onClick={() => setShowForm(!showForm)}>+ Add Product</button>
+            {showForm && (
+              <section className="add-product">
+                <h2>Add Product</h2>
+                <form className="product-form" onSubmit={handleAddProduct}>
+                  <label>Crop Name</label>
+                  <input type="text" name="name" value={newProduct.name} onChange={handleChange} required />
+
+                  <label>Crop Type</label>
+                  <select name="cropType" value={newProduct.cropType} onChange={handleChange} required>
+                    <option value="">Select Crop Type</option>
+                    <option value="Vegetables">Vegetables</option>
+                    <option value="Fruits">Fruits</option>
+                    <option value="Grains">Grains</option>
+                    <option value="Dals">Dals</option>
+                    <option value="Other">Other</option>
+                  </select>
+
+                  <label>Soil Type</label>
+                  <select name="soilType" value={newProduct.soilType} onChange={handleChange} required>
+                    <option value="">Select Soil Type</option>
+                    <option value="Clay">Clay</option>
+                    <option value="Sandy">Sandy</option>
+                    <option value="Loamy">Loamy</option>
+                    <option value="Silty">Silty</option>
+                  </select>
+
+                  <label>Status</label>
+                  <select name="status" value={newProduct.status} onChange={handleChange} required>
+                    <option value="Active">Active</option>
+                    <option value="Harvested">Harvested</option>
+                    <option value="Sold">Sold</option>
+                  </select>
+
+                  <label>Pesticides Used</label>
+                  <input type="text" name="pesticides" value={newProduct.pesticides} onChange={handleChange} />
+
+                  <label>Planted Date</label>
+                  <input type="date" name="plantedDate" value={newProduct.plantedDate} onChange={handleChange} />
+
+                  <label>Harvested Date</label>
+                  <input type="date" name="harvestedDate" value={newProduct.harvestedDate} onChange={handleChange} />
+
+                  <label>Use Before</label>
+                  <input type="date" name="useBefore" value={newProduct.useBefore} onChange={handleChange} />
+
+                  <label>Location</label>
+                  <input type="text" name="location" value={newProduct.location} onChange={handleChange} />
+
+                  <label>Image Upload</label>
+                  <input type="file" name="imageFile" onChange={handleChange} />
+
+                  <div className="form-buttons">
+                    <button type="submit" className="primary-btn">Save</button>
+                    <button type="button" className="primary-btn" onClick={() => setShowForm(false)}>Cancel</button>
+                  </div>
+                </form>
+              </section>
+            )}
+          </>
+        )}
+
+        {/* Product Table */}
+        {viewPage === "products" && (
+          <section className="product-list">
+            <table>
+              <thead>
+                <tr>
+                  <th>Crop Name</th>
+                  <th>Crop Type</th>
+                  <th>Soil Type</th>
+                  <th>Status</th>
+                  <th>Planted</th>
+                  <th>Harvested</th>
+                  <th>Use Before</th>
+                  <th>Location</th>
+                  <th>Image</th>
+                  <th>QR</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {visibleProducts.map((p) => (
+                  <tr key={p.id}>
+                    <td>{p.name}</td>
+                    <td>{p.cropType}</td>
+                    <td>{p.soilType}</td>
+                    <td>{p.status}</td>
+                    <td>{p.plantedDate}</td>
+                    <td>{p.harvestedDate}</td>
+                    <td>{p.useBefore}</td>
+                    <td>{p.location}</td>
+                    <td>{p.imageUrl && <img src={p.imageUrl} alt={p.name} className="table-img" />}</td>
+                    <td>
+                      <button className="primary-btn small-btn" onClick={() => setQrModal({ open: true, data: p, showInfo: false })}>
+                        View QR
+                      </button>
+                    </td>
+                    <td>
+                      <button className="primary-btn small-btn" onClick={() => handleDelete(p.id)}>Delete</button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </section>
+        )}
+
+        {/* QR Modal */}
+        {qrModal.open && (
+          <div className="qr-modal">
+            <div className="qr-modal-content">
+              <button className="close-btn" onClick={() => setQrModal({ open: false, data: null, showInfo: false })}>X</button>
+              {qrModal.data && (
+                <>
+                  {!qrModal.showInfo ? (
+                    <>
+                      <QRCodeCanvas value={JSON.stringify(qrModal.data)} size={180} />
+                      <button className="primary-btn" onClick={() => setQrModal((prev) => ({ ...prev, showInfo: true }))}>
+                        Show Info
+                      </button>
+                    </>
+                  ) : (
+                    <div className="qr-info">
+                      {qrModal.data.imageUrl && <img src={qrModal.data.imageUrl} alt={qrModal.data.name} className="table-img" />}
+                      <pre>{JSON.stringify(qrModal.data, null, 2)}</pre>
+                    </div>
+                  )}
+                </>
+              )}
+            </div>
+          </div>
+        )}
+      </main>
     </div>
   );
 }
