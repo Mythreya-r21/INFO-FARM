@@ -1,17 +1,9 @@
-
-/* =======================
-   Global
-======================= */
 body {
   margin: 0;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   background-color: #f0f4f7;
   color: #333;
 }
-
-/* =======================
-   Buttons
-======================= */
 .primary-btn {
   padding: 6px 14px;
   background: #4caf50;
@@ -38,10 +30,6 @@ body {
 .logout-btn:hover {
   background: #c0392b;
 }
-
-/* =======================
-   Hello Page
-======================= */
 .hello-page {
   display: flex;
   align-items: center;
@@ -64,10 +52,6 @@ body {
   font-size: 16px;
   margin-bottom: 20px;
 }
-
-/* =======================
-   Auth Pages (Login & Register)
-======================= */
 .auth-container {
   max-width: 400px;
   margin: 60px auto;
@@ -99,7 +83,7 @@ body {
   text-decoration: underline;
 }
 
-/* ===================== Dashboard ===================== */
+
 .dashboard-container {
   max-width: 1200px;
   margin: 0 auto;
@@ -120,7 +104,7 @@ body {
   margin-left: 10px;
 }
 
-/* ===================== Sidebar ===================== */
+
 .side-menu {
   position: fixed;
   top: 0;
@@ -154,7 +138,7 @@ body {
   background-color: #f0f4f7;
 }
 
-/* ===================== Search Bar ===================== */
+
 .search-container {
   margin: 15px 0;
 }
@@ -165,7 +149,7 @@ body {
   border: 1px solid #ccc;
 }
 
-/* ===================== Add Product Form ===================== */
+
 .add-product {
   background: #fff;
   padding: 20px;
@@ -193,7 +177,7 @@ body {
   gap: 10px;
 }
 
-/* ===================== Product Table ===================== */
+
 .product-list table, .orders-page table {
   width: 100%;
   border-collapse: collapse;
@@ -214,7 +198,7 @@ body {
   border-radius: 4px;
 }
 
-/* ===================== Dashboard Status ===================== */
+
 .dashboard-status {
   display: flex;
   flex-wrap: wrap;
@@ -229,7 +213,7 @@ body {
   text-align: center;
 }
 
-/* ===================== QR Modal ===================== */
+
 .qr-modal {
   position: fixed;
   top:0;
@@ -267,7 +251,7 @@ body {
   border-radius: 6px;
 }
 
-/* ===================== Responsive ===================== */
+
 @media (max-width: 768px) {
   .product-form {
     grid-template-columns: 1fr;
