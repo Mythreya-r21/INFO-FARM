@@ -154,7 +154,7 @@ export default function Dashboard() {
         </div>
       </header>
 
-      {/* Sidebar */}
+      
       {sidebarOpen && (
         <div className="side-menu">
           <button className="close-btn" onClick={() => setSidebarOpen(false)}>Back</button>
@@ -170,14 +170,14 @@ export default function Dashboard() {
       )}
 
       <main className="dashboard-main">
-        {/* Search */}
+       
         {viewPage === "products" && (
           <div className="search-container">
             <input type="text" placeholder="Search products..." />
           </div>
         )}
 
-        {/* Dashboard Status */}
+        
         {viewPage === "dashboard" && (
           <div className="dashboard-status">
             {dashboardData[role.toLowerCase()]?.map((d, i) => (
@@ -189,7 +189,7 @@ export default function Dashboard() {
           </div>
         )}
 
-        {/* Orders */}
+        
         {viewPage === "orders" && (
           <div className="orders-page">
             <h2>Orders</h2>
@@ -214,7 +214,7 @@ export default function Dashboard() {
           </div>
         )}
 
-        {/* Add Product Form */}
+        
         {viewPage === "products" && (
           <>
             <button className="primary-btn" onClick={() => setShowForm(!showForm)}>+ Add Product</button>
@@ -279,7 +279,7 @@ export default function Dashboard() {
           </>
         )}
 
-        {/* Product Table */}
+        
         {viewPage === "products" && (
           <section className="product-list">
             <table>
@@ -325,7 +325,7 @@ export default function Dashboard() {
           </section>
         )}
 
-        {/* QR Modal */}
+        
         {qrModal.open && (
           <div className="qr-modal">
             <div className="qr-modal-content">
