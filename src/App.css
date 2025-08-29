@@ -1,3 +1,4 @@
+
 /* =======================
    Global
 ======================= */
@@ -98,9 +99,7 @@ body {
   text-decoration: underline;
 }
 
-/* =======================
-   Dashboard
-======================= */
+/* ===================== Dashboard ===================== */
 .dashboard-container {
   max-width: 1200px;
   margin: 0 auto;
@@ -111,62 +110,62 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
   background: #4caf50;
   color: white;
   padding: 15px;
   border-radius: 8px;
 }
 
-.user-info {
-  display: flex;
-  align-items: center;
-  gap: 15px;
+.user-info button {
+  margin-left: 10px;
 }
 
-/* Hamburger Menu */
-.hamburger-menu {
-  position: fixed;
-  top: 20px;
-  left: 20px;
-  cursor: pointer;
-  z-index: 100;
-}
-.hamburger-menu span {
-  display: block;
-  width: 25px;
-  height: 3px;
-  background: #333;
-  margin: 5px 0;
-  border-radius: 2px;
-}
-
-/* Side Menu */
+/* ===================== Sidebar ===================== */
 .side-menu {
   position: fixed;
   top: 0;
-  left: -260px;
-  width: 250px;
+  left: 0;
+  width: 260px;
   height: 100%;
   background: #fff;
   box-shadow: 2px 0 8px rgba(0,0,0,0.2);
   padding: 20px;
-  transition: 0.3s ease;
-  z-index: 99;
-  display: flex;
-  flex-direction: column;
+  z-index: 100;
 }
-.side-menu.active {
-  left: 0;
+.side-menu .close-btn {
+  background: #e74c3c;
+  color: #fff;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 10px;
 }
-.side-menu h3 {
-  margin-top: 0;
+.side-menu ul {
+  list-style: none;
+  padding: 0;
 }
-.side-menu button {
-  margin: 10px 0;
+.side-menu ul li {
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+.side-menu ul li:hover {
+  background-color: #f0f4f7;
 }
 
-/* Add Product Form */
+/* ===================== Search Bar ===================== */
+.search-container {
+  margin: 15px 0;
+}
+.search-container input {
+  padding: 6px 10px;
+  width: 100%;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+/* ===================== Add Product Form ===================== */
 .add-product {
   background: #fff;
   padding: 20px;
@@ -177,61 +176,60 @@ body {
 .product-form {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 10px;
+  gap: 15px;
 }
-.product-form input,
-.product-form select,
-.product-form button {
+.product-form label {
+  font-weight: bold;
+  display: block;
+}
+.product-form input, .product-form select {
   padding: 8px;
   border-radius: 5px;
   border: 1px solid #ccc;
-  width: 100%;
 }
-
-/* Form Buttons */
 .form-buttons {
   grid-column: span 2;
   display: flex;
   gap: 10px;
 }
-.save-btn {
-  background: #4caf50;
-  font-size: 13px;
-  padding: 5px 10px;
-}
-.cancel-btn {
-  background: #f44336;
-  font-size: 13px;
-  padding: 5px 10px;
-}
 
-/* Product Table */
-.product-list table {
+/* ===================== Product Table ===================== */
+.product-list table, .orders-page table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 10px;
 }
-.product-list th,
-.product-list td {
+.product-list th, .product-list td, .orders-page th, .orders-page td {
   border: 1px solid #ddd;
   padding: 8px;
   text-align: center;
-  font-size: 14px;
 }
-.product-list th {
+.product-list th, .orders-page th {
   background-color: #c8e6c9;
 }
-.product-list img {
+.table-img {
   width: 50px;
   height: 50px;
   object-fit: cover;
   border-radius: 4px;
 }
-.product-list .qr-code {
-  cursor: pointer;
+
+/* ===================== Dashboard Status ===================== */
+.dashboard-status {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+.status-card {
+  flex: 1 1 200px;
+  background: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+  text-align: center;
 }
 
-/* QR Modal */
+/* ===================== QR Modal ===================== */
 .qr-modal {
   position: fixed;
   top:0;
@@ -249,11 +247,8 @@ body {
   padding: 20px;
   border-radius: 10px;
   width: 320px;
-  position: relative;
   text-align: center;
-}
-.qr-modal-content img {
-  margin-bottom: 10px;
+  position: relative;
 }
 .qr-modal-content .close-btn {
   position: absolute;
@@ -266,38 +261,13 @@ body {
   border-radius: 4px;
   cursor: pointer;
 }
-
-/* Orders / Role content */
-.role-content {
-  margin-top: 20px;
-  background: #fff;
-  padding: 15px;
-  border-radius: 10px;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.05);
-}
-
-/* Search Bar */
-.search-container {
-  position: relative;
+.qr-info img {
   margin: 10px 0;
-}
-.search-container input {
-  padding: 6px 28px 6px 10px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  width: 100%;
-}
-.search-container .search-icon {
-  position: absolute;
-  right: 8px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 16px;
-  color: #666;
-  pointer-events: none;
+  width: 150px;
+  border-radius: 6px;
 }
 
-/* Responsive */
+/* ===================== Responsive ===================== */
 @media (max-width: 768px) {
   .product-form {
     grid-template-columns: 1fr;
@@ -305,10 +275,10 @@ body {
   .form-buttons {
     flex-direction: column;
   }
-  .product-list table, .product-list th, .product-list td {
-    font-size: 12px;
-  }
   .side-menu {
     width: 200px;
+  }
+  .dashboard-status {
+    flex-direction: column;
   }
 }
